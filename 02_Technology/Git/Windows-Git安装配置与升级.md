@@ -134,9 +134,42 @@ where.exe git
 - **更新项目代码**：通常使用 `git pull`；运行前检查本地改动。
 - **部署应用**：还涉及项目构建、运行环境和服务启动，不能仅靠安装 Git 完成。
 
+## 8. SourceTree、Obsidian 与终端统一 Git
+
+状态：2026-09-05「配置系统Git」提出此需求，尚无切换完成回执。以下补充在本篇，避免再建一份安装教程。
+
+1. 用前文的 `where.exe git` 确認实际路径；PowerShell 中不要用 `where git`，它可能解析为筛选命令别名。
+2. SourceTree：Tools → Options → Git → Use System Git，核对显示版本和路径后重启。
+3. Obsidian Git（桌面）：优先使用 PATH 中的 Git；找不到时在插件的 Custom Git binary path 填实际 `git.exe` 路径，再彻底重启 Obsidian。不要照抄别台电脑的路径。
+4. Git 可执行文件和 SSH 客户端分别配置。若终端用 OpenSSH、SourceTree 用 PuTTY/Plink，两者密钥格式、代理进程可能不同；先核对实际客户端，再决定是否统一，不能仅切换 System Git 就宣布 SSH 也一致。
+5. 在同一仓库分别执行刷新 / Fetch，确认远程分支可见。安装成功、读取成功、推送成功是三个独立验收项。
+
+### SSH 与 HTTPS 分开排查
+
+先在 Vault 目录执行：
+
+```powershell
+git remote -v
+git status --short --branch
+git config --show-origin --get core.sshCommand
+```
+
+- `git@github.com:...` 使用 SSH；`https://github.com/...` 使用 HTTPS 凭据。提交姓名和邮箱不负责远程认证。
+- SSH 可执行 `ssh -T git@github.com`，首次连接按 GitHub 官方公钥指纹核验主机；认证成功提示“不提供 shell”是预期行为，退出码不一定为 0。
+- 不要覆盖已有私钥。若已有可用密钥，先确认 GitHub 登记的公钥、SSH 配置以及实际选中的身份。
+- 本地 Git 凭据和 AI 的 GitHub 连接授权分别验收；一边能用不证明另一边能用。
+
+### 多端同步与冲突处理
+
+开始编辑：先 `git status`，本地有改动时先保存并检查；工作区干净后用 `git pull --ff-only` 更新。出现分叉时先 Fetch、阅读双方差异，再选择合并；不要为了继续同步覆盖本地笔记。
+
+写完：仅暂存本次文件 → 阅读暂存差异 → Commit → Push → 在 GitHub 查看提交。Obsidian 的 Commit 与 Push 是不同步骤。云端 AI 写完后，本机 Pull 才会获得新文件；连接工作流见关联集成笔记。
+
 ## 参考资料
 
 - [Git 官方 Windows 安装说明](https://git-scm.com/install/windows)
 - [Git for Windows FAQ（包含升级命令）](https://gitforwindows.org/faq.html)
 
 来源：2026-09-05 本次对话，以及知识库中已有的集成方案笔记。完成状态依据用户确认，非本次独立终端测试。
+
+补充来源：[SourceTree 官方切换说明](https://support.atlassian.com/sourcetree/kb/using-embedded-git-or-system-git-in-sourcetree/)、[Obsidian Git 维护者说明](https://github.com/Vinzent03/obsidian-git/blob/master/README.md)。核对日期：2026-09-05。
