@@ -157,6 +157,8 @@ VS Code
 Obsidian Git
 ```
 
+2026-09-05 状态更新：用户已确认 Git 恢复正常使用。安装、配置、升级和排查步骤已整理到 [[02_Technology/Git/Windows-Git安装配置与升级]]。本次未记录实际安装方式和版本号，也未单独确认 SourceTree 是否已切换到系统 Git。
+
 ## GitHub Connector
 
 ChatGPT 已连接 GitHub Connector，并确认能够访问：

@@ -13,6 +13,8 @@
 - [[02_Technology]]
 - [[03_Hardware]]
 
+- [[02_Technology/Git/Windows-Git安装配置与升级]]
+
 ## 故障排查
 
 - [[04_Troubleshooting]]
