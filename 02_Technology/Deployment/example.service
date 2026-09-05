@@ -1,0 +1,21 @@
+# Template only: verify user, group, runtime and paths before installation.
+[Unit]
+Description=Example .NET service
+After=network.target
+
+[Service]
+Type=simple
+User=example
+Group=example
+WorkingDirectory=/opt/example/current
+ExecStart=/usr/bin/dotnet /opt/example/current/Example.dll
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGINT
+SyslogIdentifier=example
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
